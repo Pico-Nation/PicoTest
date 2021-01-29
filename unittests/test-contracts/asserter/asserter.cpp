@@ -1,6 +1,6 @@
 #include "asserter.hpp"
 
-using namespace eosio;
+using namespace picoio;
 
 static int global_variable = 45;
 

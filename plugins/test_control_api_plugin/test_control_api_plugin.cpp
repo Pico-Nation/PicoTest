@@ -1,13 +1,13 @@
-#include <eosio/test_control_api_plugin/test_control_api_plugin.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <picoio/test_control_api_plugin/test_control_api_plugin.hpp>
+#include <picoio/chain/exceptions.hpp>
 
 #include <fc/io/json.hpp>
 
-namespace eosio {
+namespace picoio {
 
 static appbase::abstract_plugin& _test_control_api_plugin = app().register_plugin<test_control_api_plugin>();
 
-using namespace eosio;
+using namespace picoio;
 
 class test_control_api_plugin_impl {
 public:

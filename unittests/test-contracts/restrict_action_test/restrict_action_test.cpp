@@ -1,7 +1,7 @@
 #include "restrict_action_test.hpp"
-#include <eosio/transaction.hpp>
+#include <picoio/transaction.hpp>
 
-using namespace eosio;
+using namespace picoio;
 
 void restrict_action_test::noop( ) {
 

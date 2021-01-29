@@ -1,8 +1,8 @@
-#include <eosio/chain_plugin/account_query_db.hpp>
+#include <picoio/chain_plugin/account_query_db.hpp>
 
-#include <eosio/chain/contract_types.hpp>
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/permission_object.hpp>
+#include <picoio/chain/contract_types.hpp>
+#include <picoio/chain/controller.hpp>
+#include <picoio/chain/permission_object.hpp>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -15,7 +15,7 @@
 
 #include <shared_mutex>
 
-using namespace eosio;
+using namespace picoio;
 using namespace boost::multi_index;
 using namespace boost::bimaps;
 
@@ -68,12 +68,12 @@ namespace {
       if (p->action_traces.empty())
          return false;
       const auto& act = p->action_traces[0].act;
-      if (act.account != eosio::chain::config::system_account_name || act.name != N(onblock) ||
+      if (act.account != picoio::chain::config::system_account_name || act.name != N(onblock) ||
           act.authorization.size() != 1)
          return false;
       const auto& auth = act.authorization[0];
-      return auth.actor == eosio::chain::config::system_account_name &&
-             auth.permission == eosio::chain::config::active_name;
+      return auth.actor == picoio::chain::config::system_account_name &&
+             auth.permission == picoio::chain::config::active_name;
    }
 
    template<typename T>
@@ -123,7 +123,7 @@ namespace std {
 
 }
 
-namespace eosio::chain_apis {
+namespace picoio::chain_apis {
    /**
     * Implementation details of the account query DB
     */
@@ -338,7 +338,7 @@ namespace eosio::chain_apis {
             for (const auto& up: updated) {
                auto key = std::make_tuple(up.actor, up.permission);
                auto source_itr = permission_by_owner.find(key);
-               EOS_ASSERT(source_itr != permission_by_owner.end(), chain::plugin_exception, "chain data is missing");
+               PICO_ASSERT(source_itr != permission_by_owner.end(), chain::plugin_exception, "chain data is missing");
                auto itr = index.find(key);
                if (itr == index.end()) {
                   const auto& po = *source_itr;

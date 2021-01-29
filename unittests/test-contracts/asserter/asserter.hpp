@@ -1,14 +1,14 @@
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <picoio/picoio.hpp>
 
-class [[eosio::contract]] asserter : public eosio::contract {
+class [[picoio::contract]] asserter : public picoio::contract {
 public:
-   using eosio::contract::contract;
+   using picoio::contract::contract;
 
-   [[eosio::action]]
+   [[picoio::action]]
    void procassert( int8_t condition, std::string message );
 
-   [[eosio::action]]
+   [[picoio::action]]
    void provereset();
 };

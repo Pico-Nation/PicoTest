@@ -1,7 +1,7 @@
-#include <eosio/chain/genesis_state.hpp>
+#include <picoio/chain/genesis_state.hpp>
 
-namespace eosio { namespace chain {
+namespace picoio { namespace chain {
 
-const string genesis_state::eosio_root_key = "${EOSIO_ROOT_KEY}";
+const string genesis_state::picoio_root_key = "${PICOIO_ROOT_KEY}";
 
-} } // namespace eosio::chain
+} } // namespace picoio::chain

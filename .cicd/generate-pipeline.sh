@@ -5,8 +5,8 @@ set -eo pipefail
 export MOJAVE_ANKA_TAG_BASE=${MOJAVE_ANKA_TAG_BASE:-'clean::cicd::git-ssh::nas::brew::buildkite-agent'}
 export MOJAVE_ANKA_TEMPLATE_NAME=${MOJAVE_ANKA_TEMPLATE_NAME:-'10.14.6_6C_14G_80G'}
 export PLATFORMS_JSON_ARRAY='[]'
-BUILDKITE_BUILD_AGENT_QUEUE='automation-eks-eos-builder-fleet'
-BUILDKITE_TEST_AGENT_QUEUE='automation-eks-eos-tester-fleet'
+BUILDKITE_BUILD_AGENT_QUEUE='automation-eks-pico-builder-fleet'
+BUILDKITE_TEST_AGENT_QUEUE='automation-eks-pico-tester-fleet'
 [[ -z "$ROUNDS" ]] && export ROUNDS='1'
 # Determine if it's a forked PR and make sure to add git fetch so we don't have to git clone the forked repo's url
 if [[ $BUILDKITE_BRANCH =~ ^pull/[0-9]+/head: ]]; then
@@ -110,10 +110,10 @@ EOF
         cat <<EOF
   - label: "$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
-      - "cd eos && ./.cicd/build.sh"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
+      - "cd pico && ./.cicd/build.sh"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: ${MOJAVE_ANKA_TEMPLATE_NAME}
@@ -127,8 +127,8 @@ EOF
             - 'registry_1'
             - 'registry_2'
           pre-commands: 
-            - "git clone git@github.com:EOSIO/mac-anka-fleet.git && cd mac-anka-fleet && . ./ensure-tag.bash -u 12 -r 25G -a '-n'"
-      - EOSIO/skip-checkout#v0.1.1:
+            - "git clone git@github.com:PICOIO/mac-anka-fleet.git && cd mac-anka-fleet && . ./ensure-tag.bash -u 12 -r 25G -a '-n'"
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     env:
       REPO: ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO}
@@ -137,7 +137,7 @@ EOF
       TEMPLATE_TAG: $MOJAVE_ANKA_TAG_BASE
       IMAGE_TAG: $(echo "$PLATFORM_JSON" | jq -r .FILE_NAME)
       PLATFORM_TYPE: $PLATFORM_TYPE
-      TAG_COMMANDS: "git clone ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO} eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive && export IMAGE_TAG=$(echo "$PLATFORM_JSON" | jq -r .FILE_NAME) && export PLATFORM_TYPE=$PLATFORM_TYPE && . ./.cicd/platforms/$PLATFORM_TYPE/$(echo "$PLATFORM_JSON" | jq -r .FILE_NAME).sh && cd ~/eos && cd .. && rm -rf eos"
+      TAG_COMMANDS: "git clone ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO} pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive && export IMAGE_TAG=$(echo "$PLATFORM_JSON" | jq -r .FILE_NAME) && export PLATFORM_TYPE=$PLATFORM_TYPE && . ./.cicd/platforms/$PLATFORM_TYPE/$(echo "$PLATFORM_JSON" | jq -r .FILE_NAME).sh && cd ~/pico && cd .. && rm -rf pico"
       PROJECT_TAG: $(echo "$PLATFORM_JSON" | jq -r .HASHED_IMAGE_TAG)
     timeout: ${TIMEOUT:-180}
     agents: "queue=mac-anka-large-node-fleet"
@@ -190,11 +190,11 @@ EOF
             cat <<EOF
   - label: "$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Unit Tests"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
-      - "cd eos && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
-      - "cd eos && ./.cicd/test.sh scripts/parallel-test.sh"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
+      - "cd pico && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
+      - "cd pico && ./.cicd/test.sh scripts/parallel-test.sh"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: ${MOJAVE_ANKA_TEMPLATE_NAME}
@@ -205,7 +205,7 @@ EOF
           failover-registries:
             - 'registry_1'
             - 'registry_2'
-      - EOSIO/skip-checkout#v0.1.1:
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     agents: "queue=mac-anka-node-fleet"
     retry:
@@ -243,11 +243,11 @@ EOF
             cat <<EOF
   - label: "$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - WASM Spec Tests"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
-      - "cd eos && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
-      - "cd eos && ./.cicd/test.sh scripts/wasm-spec-test.sh"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
+      - "cd pico && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
+      - "cd pico && ./.cicd/test.sh scripts/wasm-spec-test.sh"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: ${MOJAVE_ANKA_TEMPLATE_NAME}
@@ -258,7 +258,7 @@ EOF
           failover-registries:
             - 'registry_1'
             - 'registry_2'
-      - EOSIO/skip-checkout#v0.1.1:
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     agents: "queue=mac-anka-node-fleet"
     retry:
@@ -299,11 +299,11 @@ EOF
                 cat <<EOF
   - label: "$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - $TEST_NAME"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
-      - "cd eos && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
-      - "cd eos && ./.cicd/test.sh scripts/serial-test.sh $TEST_NAME"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
+      - "cd pico && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' && tar -xzf build.tar.gz"
+      - "cd pico && ./.cicd/test.sh scripts/serial-test.sh $TEST_NAME"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: ${MOJAVE_ANKA_TEMPLATE_NAME}
@@ -314,7 +314,7 @@ EOF
           failover-registries:
             - 'registry_1'
             - 'registry_2'
-      - EOSIO/skip-checkout#v0.1.1:
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     agents: "queue=mac-anka-node-fleet"
     retry:
@@ -356,11 +356,11 @@ EOF
                 cat <<EOF
   - label: "$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - $TEST_NAME"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
-      - "cd eos && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' ${BUILD_SOURCE} && tar -xzf build.tar.gz"
-      - "cd eos && ./.cicd/test.sh scripts/long-running-test.sh $TEST_NAME"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT && git submodule update --init --recursive"
+      - "cd pico && buildkite-agent artifact download build.tar.gz . --step '$(echo "$PLATFORM_JSON" | jq -r .ICON) $(echo "$PLATFORM_JSON" | jq -r .PLATFORM_NAME_FULL) - Build' ${BUILD_SOURCE} && tar -xzf build.tar.gz"
+      - "cd pico && ./.cicd/test.sh scripts/long-running-test.sh $TEST_NAME"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: ${MOJAVE_ANKA_TEMPLATE_NAME}
@@ -371,7 +371,7 @@ EOF
           failover-registries:
             - 'registry_1'
             - 'registry_2'
-      - EOSIO/skip-checkout#v0.1.1:
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     agents: "queue=mac-anka-node-fleet"
     retry:
@@ -408,12 +408,12 @@ if [[ ! "$PINNED" == 'false' || "$SKIP_MULTIVERSION_TEST" == 'false' ]]; then
 
 EOF
 fi
-# trigger eosio-lrt post pr
+# trigger picoio-lrt post pr
 if [[ -z $BUILDKITE_TRIGGERED_FROM_BUILD_ID && $TRIGGER_JOB == "true" ]]; then
     if ( [[ ! $PINNED == false ]] ); then
         cat <<EOF
   - label: ":pipeline: Trigger Long Running Tests"
-    trigger: "eosio-lrt"
+    trigger: "picoio-lrt"
     async: true
     build:
       message: "Triggered by $BUILDKITE_PIPELINE_SLUG build $BUILDKITE_BUILD_NUMBER"
@@ -431,11 +431,11 @@ if [[ -z $BUILDKITE_TRIGGERED_FROM_BUILD_ID && $TRIGGER_JOB == "true" ]]; then
 EOF
     fi
 fi
-# trigger eosio-sync-from-genesis for every build
-if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
+# trigger picoio-sync-from-genesis for every build
+if [[ "$BUILDKITE_PIPELINE_SLUG" == 'picoio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
     cat <<EOF
   - label: ":chains: Sync from Genesis Test"
-    trigger: "eosio-sync-from-genesis"
+    trigger: "picoio-sync-from-genesis"
     async: false
     if: build.env("BUILDKITE_TAG") == null
     build:
@@ -451,11 +451,11 @@ if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}$
 
 EOF
 fi
-# trigger eosio-resume-from-state for every build
-if [[ "$BUILDKITE_PIPELINE_SLUG" == 'eosio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
+# trigger picoio-resume-from-state for every build
+if [[ "$BUILDKITE_PIPELINE_SLUG" == 'picoio' && -z "${SKIP_INSTALL}${SKIP_LINUX}${SKIP_DOCKER}${SKIP_SYNC_TESTS}" ]]; then
     cat <<EOF
   - label: ":outbox_tray: Resume from State Test"
-    trigger: "eosio-resume-from-state"
+    trigger: "picoio-resume-from-state"
     async: false
     if: build.env("BUILDKITE_TAG") == null
     build:
@@ -534,11 +534,11 @@ cat <<EOF
 
   - label: ":darwin: macOS 10.14 - Package Builder"
     command:
-      - "git clone \$BUILDKITE_REPO eos && cd eos && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT"
-      - "cd eos && buildkite-agent artifact download build.tar.gz . --step ':darwin: macOS 10.14 - Build' && tar -xzf build.tar.gz"
-      - "cd eos && ./.cicd/package.sh"
+      - "git clone \$BUILDKITE_REPO pico && cd pico && $GIT_FETCH git checkout -f \$BUILDKITE_COMMIT"
+      - "cd pico && buildkite-agent artifact download build.tar.gz . --step ':darwin: macOS 10.14 - Build' && tar -xzf build.tar.gz"
+      - "cd pico && ./.cicd/package.sh"
     plugins:
-      - EOSIO/anka#v0.6.1:
+      - PICOIO/anka#v0.6.1:
           no-volume: true
           inherit-environment-vars: true
           vm-name: 10.14.6_6C_14G_80G
@@ -549,7 +549,7 @@ cat <<EOF
           failover-registries:
             - 'registry_1'
             - 'registry_2'
-      - EOSIO/skip-checkout#v0.1.1:
+      - PICOIO/skip-checkout#v0.1.1:
           cd: ~
     agents:
       - "queue=mac-anka-node-fleet"
@@ -576,8 +576,8 @@ cat <<EOF
 
   - label: ":beer: Brew Updater"
     command: |
-      buildkite-agent artifact download eosio.rb . --step ':darwin: macOS 10.14 - Package Builder'
-      buildkite-agent artifact upload eosio.rb
+      buildkite-agent artifact download picoio.rb . --step ':darwin: macOS 10.14 - Package Builder'
+      buildkite-agent artifact upload picoio.rb
     agents:
       queue: "automation-basic-builder-fleet"
     timeout: "${TIMEOUT:-5}"

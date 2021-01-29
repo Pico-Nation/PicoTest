@@ -1,9 +1,9 @@
 #pragma once
 
-#include <eosio/testing/tester.hpp>
+#include <picoio/testing/tester.hpp>
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace picoio::chain;
+using namespace picoio::testing;
 
 private_key_type get_private_key( name keyname, string role );
 

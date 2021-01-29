@@ -1,8 +1,8 @@
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/testing/tester.hpp>
+#include <picoio/chain/abi_serializer.hpp>
+#include <picoio/chain/abi_serializer.hpp>
+#include <picoio/testing/tester.hpp>
 
-#include <eosio/chain/fork_database.hpp>
+#include <picoio/chain/fork_database.hpp>
 
 #include <Runtime/Runtime.h>
 
@@ -14,8 +14,8 @@
 
 #include "fork_test_utilities.hpp"
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace picoio::chain;
+using namespace picoio::testing;
 
 BOOST_AUTO_TEST_SUITE(forked_tests)
 
@@ -140,26 +140,26 @@ BOOST_AUTO_TEST_CASE( forking ) try {
    wlog("set producer schedule to [dan,sam,pam]");
    c.produce_blocks(30);
 
-   auto r2 = c.create_accounts( {N(eosio.token)} );
+   auto r2 = c.create_accounts( {N(picoio.token)} );
    wdump((fc::json::to_pretty_string(r2)));
-   c.set_code( N(eosio.token), contracts::eosio_token_wasm() );
-   c.set_abi( N(eosio.token), contracts::eosio_token_abi().data() );
+   c.set_code( N(picoio.token), contracts::picoio_token_wasm() );
+   c.set_abi( N(picoio.token), contracts::picoio_token_abi().data() );
    c.produce_blocks(10);
 
 
-   auto cr = c.push_action( N(eosio.token), N(create), N(eosio.token), mutable_variant_object()
-              ("issuer",       "eosio" )
+   auto cr = c.push_action( N(picoio.token), N(create), N(picoio.token), mutable_variant_object()
+              ("issuer",       "picoio" )
               ("maximum_supply", core_from_string("10000000.0000"))
       );
 
-   cr = c.push_action( N(eosio.token), N(issue), config::system_account_name, mutable_variant_object()
-              ("to",       "eosio" )
+   cr = c.push_action( N(picoio.token), N(issue), config::system_account_name, mutable_variant_object()
+              ("to",       "picoio" )
               ("quantity", core_from_string("100.0000"))
               ("memo", "")
       );
 
-   cr = c.push_action( N(eosio.token), N(transfer), config::system_account_name, mutable_variant_object()
-              ("from",     "eosio")
+   cr = c.push_action( N(picoio.token), N(transfer), config::system_account_name, mutable_variant_object()
+              ("from",     "picoio")
               ("to",       "dan" )
               ("quantity", core_from_string("100.0000"))
               ("memo", "")

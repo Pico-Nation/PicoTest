@@ -3,12 +3,12 @@
 
 #include <fc/variant_object.hpp>
 
-#include <eosio/trace_api/request_handler.hpp>
-#include <eosio/trace_api/test_common.hpp>
+#include <picoio/trace_api/request_handler.hpp>
+#include <picoio/trace_api/test_common.hpp>
 
-using namespace eosio;
-using namespace eosio::trace_api;
-using namespace eosio::trace_api::test_common;
+using namespace picoio;
+using namespace picoio::trace_api;
+using namespace picoio::trace_api::test_common;
 
 struct response_test_fixture {
    /**

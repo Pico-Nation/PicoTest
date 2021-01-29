@@ -1,6 +1,6 @@
-if( EOSIO_COMPILE_TEST_CONTRACTS )
-   set(EOSIO_WASM_OLD_BEHAVIOR "Off")
-   find_package( eosio.cdt REQUIRED )
+if( PICOIO_COMPILE_TEST_CONTRACTS )
+   set(PICOIO_WASM_OLD_BEHAVIOR "Off")
+   find_package( picoio.cdt REQUIRED )
 endif()
 
 if ("${CMAKE_GENERATOR}" STREQUAL "Ninja")

@@ -3,11 +3,11 @@
 #include <list>
 #include <boost/filesystem.hpp>
 
-#include <eosio/trace_api/compressed_file.hpp>
-#include <eosio/trace_api/test_common.hpp>
+#include <picoio/trace_api/compressed_file.hpp>
+#include <picoio/trace_api/test_common.hpp>
 
-using namespace eosio;
-using namespace eosio::trace_api;
+using namespace picoio;
+using namespace picoio::trace_api;
 
 namespace bfs = boost::filesystem;
 

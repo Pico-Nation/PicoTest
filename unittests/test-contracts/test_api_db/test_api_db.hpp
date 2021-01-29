@@ -1,42 +1,42 @@
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <picoio/picoio.hpp>
 
-class [[eosio::contract]] test_api_db : public eosio::contract {
+class [[picoio::contract]] test_api_db : public picoio::contract {
 public:
-   using eosio::contract::contract;
+   using picoio::contract::contract;
 
-   [[eosio::action("pg")]]
+   [[picoio::action("pg")]]
    void primary_i64_general();
 
-   [[eosio::action("pl")]]
+   [[picoio::action("pl")]]
    void primary_i64_lowerbound();
 
-   [[eosio::action("pu")]]
+   [[picoio::action("pu")]]
    void primary_i64_upperbound();
 
-   [[eosio::action("s1g")]]
+   [[picoio::action("s1g")]]
    void idx64_general();
 
-   [[eosio::action("s1l")]]
+   [[picoio::action("s1l")]]
    void idx64_lowerbound();
 
-   [[eosio::action("s1u")]]
+   [[picoio::action("s1u")]]
    void idx64_upperbound();
 
-   [[eosio::action("tia")]]
-   void test_invalid_access( eosio::name code, uint64_t val, uint32_t index, bool store );
+   [[picoio::action("tia")]]
+   void test_invalid_access( picoio::name code, uint64_t val, uint32_t index, bool store );
 
-   [[eosio::action("sdnancreate")]]
+   [[picoio::action("sdnancreate")]]
    void idx_double_nan_create_fail();
 
-   [[eosio::action("sdnanmodify")]]
+   [[picoio::action("sdnanmodify")]]
    void idx_double_nan_modify_fail();
 
-   [[eosio::action("sdnanlookup")]]
+   [[picoio::action("sdnanlookup")]]
    void idx_double_nan_lookup_fail( uint32_t lookup_type );
 
-   [[eosio::action("sk32align")]]
+   [[picoio::action("sk32align")]]
    void misaligned_secondary_key256_tests();
 
 };

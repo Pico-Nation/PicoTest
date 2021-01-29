@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in pico/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
-#include <eosio/crypto.hpp>
+#include <picoio/picoio.hpp>
+#include <picoio/crypto.hpp>
 
-using namespace eosio;
+using namespace picoio;
 
-class [[eosio::contract]] get_table_test : public eosio::contract {
+class [[picoio::contract]] get_table_test : public picoio::contract {
     public:
-    using eosio::contract::contract;
+    using picoio::contract::contract;
 
     // Number object
-    struct [[eosio::table]] numobj {
+    struct [[picoio::table]] numobj {
         uint64_t        key;
         uint64_t        sec64;
         uint128_t       sec128;
@@ -29,7 +29,7 @@ class [[eosio::contract]] get_table_test : public eosio::contract {
     };
 
     // Hash object
-    struct [[eosio::table]] hashobj {
+    struct [[picoio::table]] hashobj {
         uint64_t        key;
         std::string     hash_input;
         checksum256     sec256;
@@ -40,23 +40,23 @@ class [[eosio::contract]] get_table_test : public eosio::contract {
         checksum256 sec160_key() const { return checksum256(sec160.get_array()); }
     };
 
-    typedef eosio::multi_index< "numobjs"_n, numobj, 
+    typedef picoio::multi_index< "numobjs"_n, numobj, 
                                 indexed_by<"bysec1"_n, const_mem_fun<numobj, uint64_t, &numobj::sec64_key>>,
                                 indexed_by<"bysec2"_n, const_mem_fun<numobj, uint128_t, &numobj::sec128_key>>,
                                 indexed_by<"bysec3"_n, const_mem_fun<numobj, double, &numobj::secdouble_key>>,
                                 indexed_by<"bysec4"_n, const_mem_fun<numobj, long double, &numobj::secldouble_key>>
                                 > numobjs;
 
-    typedef eosio::multi_index< "hashobjs"_n, hashobj, 
+    typedef picoio::multi_index< "hashobjs"_n, hashobj, 
                             indexed_by<"bysec1"_n, const_mem_fun<hashobj, checksum256, &hashobj::sec256_key>>,
                             indexed_by<"bysec2"_n, const_mem_fun<hashobj, checksum256, &hashobj::sec160_key>>
                             > hashobjs;
 
-   [[eosio::action]]
+   [[picoio::action]]
    void addnumobj(uint64_t input);
 
 
-   [[eosio::action]]
+   [[picoio::action]]
    void addhashobj(std::string hashinput);
 
 

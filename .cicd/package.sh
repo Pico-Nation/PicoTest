@@ -4,7 +4,7 @@ echo '--- :evergreen_tree: Configuring Environment'
 . ./.cicd/helpers/general.sh
 mkdir -p "$BUILD_DIR"
 if [[ $(uname) == 'Darwin' && $FORCE_LINUX != true ]]; then
-    echo '+++ :package: Packaging EOSIO'
+    echo '+++ :package: Packaging PICOIO'
     PACKAGE_COMMANDS="bash -c 'cd build/packages && chmod 755 ./*.sh && ./generate_package.sh brew'"
     echo "$ $PACKAGE_COMMANDS"
     eval $PACKAGE_COMMANDS
@@ -23,7 +23,7 @@ else # Linux
         PACKAGE_TYPE='rpm'
         PACKAGE_COMMANDS="mkdir -p ~/rpmbuild/BUILD && mkdir -p ~/rpmbuild/BUILDROOT && mkdir -p ~/rpmbuild/RPMS && mkdir -p ~/rpmbuild/SOURCES && mkdir -p ~/rpmbuild/SPECS && mkdir -p ~/rpmbuild/SRPMS && yum install -y rpm-build && ./generate_package.sh \"$PACKAGE_TYPE\""
     fi
-    COMMANDS="echo \"+++ :package: Packaging EOSIO\" && $PRE_COMMANDS && $PACKAGE_COMMANDS"
+    COMMANDS="echo \"+++ :package: Packaging PICOIO\" && $PRE_COMMANDS && $PACKAGE_COMMANDS"
     DOCKER_RUN_COMMAND="docker run $ARGS $(buildkite-intrinsics) '$FULL_TAG' bash -c '$COMMANDS'"
     echo "$ $DOCKER_RUN_COMMAND"
     eval $DOCKER_RUN_COMMAND

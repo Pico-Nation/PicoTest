@@ -1,11 +1,11 @@
-#include <eosio/trace_api/request_handler.hpp>
+#include <picoio/trace_api/request_handler.hpp>
 
 #include <algorithm>
 
 #include <fc/variant_object.hpp>
 
 namespace {
-   using namespace eosio::trace_api;
+   using namespace picoio::trace_api;
 
    std::string to_iso8601_datetime( const fc::time_point& t) {
       return (std::string)t + "Z";
@@ -98,7 +98,7 @@ namespace {
 
 }
 
-namespace eosio::trace_api::detail {
+namespace picoio::trace_api::detail {
    fc::variant process_block_trace( const block_trace_v0& trace, bool irreversible, const data_handler_function& data_handler, const yield_function& yield ) {
       return fc::mutable_variant_object()
          ("id", trace.id.str() )

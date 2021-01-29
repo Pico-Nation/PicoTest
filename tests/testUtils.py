@@ -53,25 +53,25 @@ class Utils:
     Debug=False
     FNull = open(os.devnull, 'w')
 
-    EosClientPath="programs/cleos/cleos"
-    MiscEosClientArgs="--no-auto-keosd"
+    PicoClientPath="programs/clpico/clpico"
+    MiscPicoClientArgs="--no-auto-kpicod"
 
-    EosWalletName="keosd"
-    EosWalletPath="programs/keosd/"+ EosWalletName
+    PicoWalletName="kpicod"
+    PicoWalletPath="programs/kpicod/"+ PicoWalletName
 
-    EosServerName="nodeos"
-    EosServerPath="programs/nodeos/"+ EosServerName
+    PicoServerName="nodpico"
+    PicoServerPath="programs/nodpico/"+ PicoServerName
 
-    EosLauncherPath="programs/eosio-launcher/eosio-launcher"
+    PicoLauncherPath="programs/picoio-launcher/picoio-launcher"
     MongoPath="mongo"
     ShuttingDown=False
     CheckOutputDeque=deque(maxlen=10)
 
-    EosBlockLogPath="programs/eosio-blocklog/eosio-blocklog"
+    PicoBlockLogPath="programs/picoio-blocklog/picoio-blocklog"
 
     FileDivider="================================================================="
     DataDir="var/lib/"
-    ConfigDir="etc/eosio/"
+    ConfigDir="etc/picoio/"
 
     TimeFmt='%Y-%m-%dT%H:%M:%S.%f'
 
@@ -333,7 +333,7 @@ class Utils:
         else:
             unhandledEnumType(blockLogAction)
 
-        cmd="%s --blocks-dir %s --as-json-array %s%s%s%s" % (Utils.EosBlockLogPath, blockLogLocation, outputFileStr, firstStr, lastStr, blockLogActionStr)
+        cmd="%s --blocks-dir %s --as-json-array %s%s%s%s" % (Utils.PicoBlockLogPath, blockLogLocation, outputFileStr, firstStr, lastStr, blockLogActionStr)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         rtn=None
         try:

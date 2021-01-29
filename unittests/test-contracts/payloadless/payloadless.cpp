@@ -1,6 +1,6 @@
 #include "payloadless.hpp"
 
-using namespace eosio;
+using namespace picoio;
 
 void payloadless::doit() {
    print("Im a payloadless action");

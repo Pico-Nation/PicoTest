@@ -1,30 +1,30 @@
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <picoio/picoio.hpp>
 
-class [[eosio::contract]] restrict_action_test : public eosio::contract {
+class [[picoio::contract]] restrict_action_test : public picoio::contract {
 public:
-   using eosio::contract::contract;
+   using picoio::contract::contract;
 
-   [[eosio::action]]
+   [[picoio::action]]
    void noop( );
 
-   [[eosio::action]]
-   void sendinline( eosio::name authorizer );
+   [[picoio::action]]
+   void sendinline( picoio::name authorizer );
 
-   [[eosio::action]]
-   void senddefer( eosio::name authorizer, uint32_t senderid );
+   [[picoio::action]]
+   void senddefer( picoio::name authorizer, uint32_t senderid );
 
 
-   [[eosio::action]]
-   void notifyinline( eosio::name acctonotify, eosio::name authorizer );
+   [[picoio::action]]
+   void notifyinline( picoio::name acctonotify, picoio::name authorizer );
 
-   [[eosio::action]]
-   void notifydefer( eosio::name acctonotify, eosio::name authorizer, uint32_t senderid );
+   [[picoio::action]]
+   void notifydefer( picoio::name acctonotify, picoio::name authorizer, uint32_t senderid );
 
-   [[eosio::on_notify("testacc::notifyinline")]]
-   void on_notify_inline( eosio::name acctonotify, eosio::name authorizer );
+   [[picoio::on_notify("testacc::notifyinline")]]
+   void on_notify_inline( picoio::name acctonotify, picoio::name authorizer );
 
-   [[eosio::on_notify("testacc::notifydefer")]]
-   void on_notify_defer( eosio::name acctonotify, eosio::name authorizer, uint32_t senderid );
+   [[picoio::on_notify("testacc::notifydefer")]]
+   void on_notify_defer( picoio::name acctonotify, picoio::name authorizer, uint32_t senderid );
 };

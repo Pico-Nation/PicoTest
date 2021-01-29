@@ -1,11 +1,11 @@
 {
-    "eosio-code-coverage":
+    "picoio-code-coverage":
     {
         "exclude": [ // ignore coverage reports from source filenames matching these PCREs
             "^/build/",
             "^/coverage/",
             "^/.git/",
-            "^/libraries/eos-vm/",
+            "^/libraries/pico-vm/",
             "^/libraries/fc/",
             "^/libraries/wabt/",
             "^/libraries/wasm-jit/",
@@ -17,14 +17,14 @@
             "[.]h(pp)?([.]in)?$"
         ]
     },
-    "eosio-docker-builds":
+    "picoio-docker-builds":
     {
         "environment":
         {
             "BUILDER_TAG": "v2.0.0"
         }
     },
-    "eos-multiversion-tests":
+    "pico-multiversion-tests":
     {
         "environment":
         {
@@ -35,7 +35,7 @@
             "170=v1.7.0"
         ]
     },
-    "eosio-resume-from-state":
+    "picoio-resume-from-state":
     {
         "test":
         [

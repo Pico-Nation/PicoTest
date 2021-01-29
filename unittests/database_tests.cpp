@@ -1,5 +1,5 @@
-#include <eosio/chain/global_property_object.hpp>
-#include <eosio/testing/tester.hpp>
+#include <picoio/chain/global_property_object.hpp>
+#include <picoio/testing/tester.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -11,8 +11,8 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace picoio::chain;
+using namespace picoio::testing;
 namespace bfs = boost::filesystem;
 
 BOOST_AUTO_TEST_SUITE(database_tests)
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(database_tests)
          TESTER test;
 
          // Bypass read-only restriction on state DB access for this unit test which really needs to mutate the DB to properly conduct its test.
-         eosio::chain::database& db = const_cast<eosio::chain::database&>( test.control->db() );
+         picoio::chain::database& db = const_cast<picoio::chain::database&>( test.control->db() );
 
          auto ses = db.start_undo_session(true);
 

@@ -1,6 +1,6 @@
 #include "version_impl.hpp"
 
-namespace eosio { namespace version {
+namespace picoio { namespace version {
 
    const std::string& version_client() {
       static const std::string version{_version_client()};

@@ -1,23 +1,23 @@
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <picoio/picoio.hpp>
 
-class [[eosio::contract]] integration_test : public eosio::contract {
+class [[picoio::contract]] integration_test : public picoio::contract {
 public:
-   using eosio::contract::contract;
+   using picoio::contract::contract;
 
-   [[eosio::action]]
-   void store( eosio::name from, eosio::name to, uint64_t num );
+   [[picoio::action]]
+   void store( picoio::name from, picoio::name to, uint64_t num );
 
-   struct [[eosio::table("payloads")]] payload {
+   struct [[picoio::table("payloads")]] payload {
       uint64_t              key;
       std::vector<uint64_t> data;
 
       uint64_t primary_key()const { return key; }
 
-      EOSLIB_SERIALIZE( payload, (key)(data) )
+      PICOLIB_SERIALIZE( payload, (key)(data) )
    };
 
-   using payloads_table = eosio::multi_index< "payloads"_n,  payload >;
+   using payloads_table = picoio::multi_index< "payloads"_n,  payload >;
 
 };

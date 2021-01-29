@@ -1,24 +1,24 @@
-#include <eosio/producer_api_plugin/producer_api_plugin.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <picoio/producer_api_plugin/producer_api_plugin.hpp>
+#include <picoio/chain/exceptions.hpp>
 
 #include <fc/variant.hpp>
 #include <fc/io/json.hpp>
 
 #include <chrono>
 
-namespace eosio { namespace detail {
+namespace picoio { namespace detail {
   struct producer_api_plugin_response {
      std::string result;
   };
 }}
 
-FC_REFLECT(eosio::detail::producer_api_plugin_response, (result));
+FC_REFLECT(picoio::detail::producer_api_plugin_response, (result));
 
-namespace eosio {
+namespace picoio {
 
 static appbase::abstract_plugin& _producer_api_plugin = app().register_plugin<producer_api_plugin>();
 
-using namespace eosio;
+using namespace picoio;
 
 struct async_result_visitor : public fc::visitor<fc::variant> {
    template<typename T>
@@ -73,16 +73,16 @@ struct async_result_visitor : public fc::visitor<fc::variant> {
 
 #define INVOKE_V_R(api_handle, call_name, in_param) \
      api_handle.call_name(fc::json::from_string(body).as<in_param>()); \
-     eosio::detail::producer_api_plugin_response result{"ok"};
+     picoio::detail::producer_api_plugin_response result{"ok"};
 
 #define INVOKE_V_R_R(api_handle, call_name, in_param0, in_param1) \
      const auto& vs = fc::json::json::from_string(body).as<fc::variants>(); \
      api_handle.call_name(vs.at(0).as<in_param0>(), vs.at(1).as<in_param1>()); \
-     eosio::detail::producer_api_plugin_response result{"ok"};
+     picoio::detail::producer_api_plugin_response result{"ok"};
 
 #define INVOKE_V_V(api_handle, call_name) \
      api_handle.call_name(); \
-     eosio::detail::producer_api_plugin_response result{"ok"};
+     picoio::detail::producer_api_plugin_response result{"ok"};
 
 
 void producer_api_plugin::plugin_startup() {

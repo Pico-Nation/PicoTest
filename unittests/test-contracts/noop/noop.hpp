@@ -1,13 +1,13 @@
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <picoio/picoio.hpp>
 
-class [[eosio::contract]] noop : public eosio::contract {
+class [[picoio::contract]] noop : public picoio::contract {
 public:
-   using eosio::contract::contract;
+   using picoio::contract::contract;
 
-   [[eosio::action]]
-   void anyaction( eosio::name                       from,
-                   const eosio::ignore<std::string>& type,
-                   const eosio::ignore<std::string>& data );
+   [[picoio::action]]
+   void anyaction( picoio::name                       from,
+                   const picoio::ignore<std::string>& type,
+                   const picoio::ignore<std::string>& data );
 };

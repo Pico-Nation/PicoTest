@@ -11,7 +11,7 @@ if [[ "$(uname)" == 'Darwin' && "$FORCE_LINUX" != 'true' ]]; then
     fi
     [[ ! "$PINNED" == 'false' ]] && CMAKE_EXTRAS="$CMAKE_EXTRAS -DCMAKE_TOOLCHAIN_FILE=\"$HELPERS_DIR/clang.make\""
     cd "$BUILD_DIR"
-    echo '+++ :hammer_and_wrench: Building EOSIO'
+    echo '+++ :hammer_and_wrench: Building PICOIO'
     CMAKE_COMMAND="cmake $CMAKE_EXTRAS .."
     echo "$ $CMAKE_COMMAND"
     eval $CMAKE_COMMAND
@@ -35,14 +35,14 @@ else # Linux
     fi
     CMAKE_COMMAND="cmake \$CMAKE_EXTRAS .."
     MAKE_COMMAND="make -j $JOBS"
-    BUILD_COMMANDS="echo \"+++ :hammer_and_wrench: Building EOSIO\" && echo \"$ $CMAKE_COMMAND\" && eval $CMAKE_COMMAND && echo \"$ $MAKE_COMMAND\" && eval $MAKE_COMMAND"
+    BUILD_COMMANDS="echo \"+++ :hammer_and_wrench: Building PICOIO\" && echo \"$ $CMAKE_COMMAND\" && eval $CMAKE_COMMAND && echo \"$ $MAKE_COMMAND\" && eval $MAKE_COMMAND"
     # Docker Commands
     if [[ "$BUILDKITE" == 'true' ]]; then
         # Generate Base Images
         BASE_IMAGE_COMMAND="\"$CICD_DIR/generate-base-images.sh\""
         echo "$ $BASE_IMAGE_COMMAND"
         eval $BASE_IMAGE_COMMAND
-        [[ "$ENABLE_INSTALL" == 'true' ]] && COMMANDS="cp -r \"$MOUNTED_DIR\" \"/root/eosio\" && cd \"/root/eosio/build\" &&"
+        [[ "$ENABLE_INSTALL" == 'true' ]] && COMMANDS="cp -r \"$MOUNTED_DIR\" \"/root/picoio\" && cd \"/root/picoio/build\" &&"
         COMMANDS="$COMMANDS $BUILD_COMMANDS"
         [[ "$ENABLE_INSTALL" == 'true' ]] && COMMANDS="$COMMANDS && make install"
     elif [[ "$GITHUB_ACTIONS" == 'true' ]]; then

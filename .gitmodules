@@ -1,26 +1,26 @@
 [submodule "libraries/chainbase"]
 	path = libraries/chainbase
-	url = https://github.com/picoio/chainbase
+	url = https://github.com/PicoFoundation/chainbase.git
         ignore = dirty
 [submodule "libraries/appbase"]
 	path = libraries/appbase
-	url = https://github.com/picoio/appbase
+	url = https://github.com/PicoFoundation/appbase.git
         ignore = dirty
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
-	url = https://github.com/picoio/berkeley-softfloat-3
+	url = https://github.com/PicoFoundation/berkeley-softfloat-3.git
 [submodule "libraries/fc"]
 	path = libraries/fc
-	url = https://github.com/PICOIO/fc
+	url = https://github.com/PicoFoundation/fc.git
 [submodule "libraries/wabt"]
 	path = libraries/wabt
-	url = https://github.com/PICOIO/wabt
+	url = https://github.com/PicoFoundation/wabt.git
 [submodule "libraries/yubihsm"]
 	path = libraries/yubihsm
 	url = https://github.com/Yubico/yubihsm-shell
-[submodule "libraries/pico-vm"]
-	path = libraries/pico-vm
-	url = https://github.com/picoio/pico-vm
-[submodule "picoio-wasm-spec-tests"]
-	path = picoio-wasm-spec-tests
-	url = https://github.com/PICOIO/picoio-wasm-spec-tests
+[submodule "libraries/eos-vm"]
+	path = libraries/eos-vm
+	url = https://github.com/PicoFoundation/pico-vm.git
+[submodule "eosio-wasm-spec-tests"]
+	path = eosio-wasm-spec-tests
+	url = https://github.com/PicoFoundation/picoio-wasm-spec-tests.git

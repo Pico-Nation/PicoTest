@@ -22,3 +22,6 @@
 [submodule "libraries/chainbase"]
 	path = libraries/chainbase
 	url = https://github.com/PicoFoundation/chainbase.git
+[submodule "libraries/softfloat"]
+	path = libraries/softfloat
+	url = https://github.com/PicoFoundation/berkeley-softfloat-3.git

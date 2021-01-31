@@ -2,10 +2,7 @@
 	path = libraries/chainbase
 	url = https://github.com/PicoFoundation/chainbase.git
         ignore = dirty
-[submodule "libraries/appbase"]
-	path = libraries/appbase
-	url = https://github.com/PicoFoundation/appbase.git
-        ignore = dirty
+
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
 	url = https://github.com/PicoFoundation/berkeley-softfloat-3.git

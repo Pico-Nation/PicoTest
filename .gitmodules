@@ -1,9 +1,8 @@
 
 
 
-[submodule "libraries/fc"]
-	path = libraries/fc
-	url = https://github.com/PicoFoundation/fc.git
+
+
 [submodule "libraries/wabt"]
 	path = libraries/wabt
 	url = https://github.com/PicoFoundation/wabt.git

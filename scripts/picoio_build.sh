@@ -143,7 +143,7 @@ setup
 execute cd $REPO_ROOT
 
 # Submodules need to be up to date
-ensure-submodules-up-to-date
+#ensure-submodules-up-to-date
 
 # Check if cmake already exists
 ( [[ -z "${CMAKE}" ]] && [[ ! -z $(command -v cmake 2>/dev/null) ]] ) && export CMAKE=$(command -v cmake 2>/dev/null) && export CMAKE_CURRENT_VERSION=$($CMAKE --version | grep -E "cmake version[[:blank:]]*" | sed 's/.*cmake version //g')
